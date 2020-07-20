@@ -1,0 +1,34 @@
+.divfunctional{
+    
+    margin-bottom: 10px;
+}
+.table th{
+    font-weight: bold;
+}
+.table img{
+    height: 150px;
+}
+.form-group img{
+    height: 250px;
+}
+.search{
+    padding: 20px;
+    float: right;
+}
+.search input{
+    border-radius: 3px;
+    border: none;
+    padding: 14px;
+    color: white;
+    background: #6A6C75;
+    width: 90%;
+    font-size: 16px;
+}
+.fa-search{
+    position: relative;
+    left: -25px;
+}
+.btnAdd{
+    padding: 20px;
+    float: left;
+}

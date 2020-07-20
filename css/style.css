@@ -1,0 +1,176 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+*,*:before,*:after{
+    box-sizing: border-box;
+}
+img{
+    max-width: 100%;
+    height: auto;
+}
+.space{
+    margin-left: 5px;
+}
+.discount{
+    color: red;
+}
+body{
+    font-family: "Microsoft JhengHei";
+}
+.wrap{
+    width: 1200px;
+    margin: 0 auto;
+}
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+.nav{
+  width: 100%;
+  height: 140px;
+}
+body nav:nth-child(1) {
+  width: 100%;
+  height: 95px;
+  line-height: 95px;
+  position: fixed;
+  text-align: center;
+  z-index: 999;
+}
+.logo {
+  float: left;
+  padding: 1rem 0 0 3rem;
+  margin-left: 3rem;
+}
+.menuList {
+  float: right;
+}
+.menuList ul {
+  display: flex;
+}
+.menuList li {
+  text-decoration: none;
+  
+  padding-right: 2.5rem;
+  margin-right: 2.5rem;
+}
+.menuList li a {
+  text-decoration: none;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 62.5%;
+  font-size: 20px;
+  color:  #99b3ff;
+}
+.menuList li a:hover {
+  color: #0066ff;
+}
+.clearfix {
+  clear: both;
+}
+.backgroundImg  {
+    
+    display: flex;
+    justify-content: center;
+    /*
+width: 90%;
+ height: 70vmin;
+ background-position: center top;*/
+}
+.backgroundImg img{
+    width: 100%;
+    height: 70vmin;
+}
+.affix {
+  background-color: black;
+}
+.mobileMenu {
+  display: none;
+}
+.fake{
+  height: 1000px;
+}
+.fa-bars{
+  color: white;
+}
+@media screen and (max-width:1000px) {
+  .logo{
+    margin-left: 2rem;
+    padding: 2rem 0 0 1rem;
+  }
+  .menuList li {
+    text-decoration: none;
+    padding-right: 1.5rem;
+    margin-right: 1.5rem;
+  }
+}
+@media screen and (max-width:768px) {
+  .logo{
+    margin-left: 1rem;
+    padding: 1rem 0 0 1rem;
+  }
+  .mobileMenu {
+    display: inline-block;
+    float: right;
+    padding-right: 3rem;
+  }
+  .menuList {
+    display: none;
+  }
+  .menuList ul {
+    display: flex;
+    flex-direction: column;
+  }
+  .menuList li {
+    display: block;
+    margin-right: 0;
+    padding-right: 0;
+    border-bottom: 1px solid white;
+  }
+  .menuList li a {
+    color: white;
+  }
+  .menuListshow {
+    background-color: black;
+    display: inline-block;
+    width: 100%;
+    position: absolute;
+    float: none;
+    top: 92px;
+    left: 0px;
+  }
+}

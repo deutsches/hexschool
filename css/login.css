@@ -1,0 +1,157 @@
+body {
+    background: #c8c8c8;
+    color: black;
+    font: 600 16px/18px 'Open Sans', sans-serif;
+}
+
+.login_wrap {
+    max-width: 525px;
+    min-height: 670px;
+    margin: 0 auto;
+    background: url(../img/pic7.jpg) no-repeat center;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+}
+
+.login_html {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(40, 57, 101, .5);
+    padding: 90px 70px 50px 70px;
+}
+
+.login_html .signin,
+.login_html .signup {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    /* 讓signup隱藏,並轉換 */
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    transition: all .4s linear;
+}
+
+
+/* 不顯示radio button */
+
+.login_html .sign-in,
+.login_html .sign-up,
+.login_html #rememerMe .check {
+    display: none;
+}
+
+.login_html .tab {
+    border-bottom: 2px solid transparent;
+    margin: 0 15px 10px 0;
+    font-size: 22px;
+    padding-bottom: 5px;
+    /* display: inline-block; */
+}
+
+.login_html .sign-in:checked+.tab,
+.login_html .sign-up:checked+.tab {
+    color: #fff;
+    border-color: #1161ee;
+}
+
+.login_form {
+    min-height: 345px;
+    position: relative;
+    /* perspective: 1000px;
+    transform-style: preserve-3d; */
+}
+
+.login_form .group {
+    margin-bottom: 15px;
+}
+
+.login_form .group .input,
+.login_form .group .label,
+.login_form .group .button {
+    display: block;
+    color: white;
+    width: 100%;
+}
+
+.login_form .group .input,
+.login_form .group .button {
+    border-radius: 25px;
+    background: rgba(255, 255, 255, .1);
+    outline: none;
+    padding: 15px 20px;
+    border: none;
+}
+
+.login_form .group .label {
+    color: black;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.login_form .group .button {
+    background: #1161ee;
+}
+
+.login_form .group #rememberMe:checked+label {
+    color: #fff;
+}
+
+.login_html .sign-in:checked+.tab+.sign-up+.tab+.login_form .signin {
+    transform: rotate(0);
+}
+
+.login_html .sign-up:checked+.tab+.login_form .signup {
+    transform: rotate(0);
+}
+
+
+/* .login_form .group label .icon {
+    width: 15px;
+    height: 15px;
+    border-radius: 2px;
+    position: relative;
+    display: inline-block;
+    background: rgba(255, 255, 255, .1);
+}
+
+.login_form .group label .icon:before,
+.login_form .group label .icon:after {
+    content: '';
+    width: 10px;
+    height: 2px;
+    background: #fff;
+    position: absolute;
+    transition: all .2s ease-in-out 0s;
+}
+
+.login_form .group label .icon:before {
+    left: 3px;
+    width: 5px;
+    bottom: 6px;
+    transform: scale(0) rotate(0);
+}
+
+.login_form .group label .icon:after {
+    top: 6px;
+    right: 0;
+    transform: scale(0) rotate(0);
+} 
+
+.login_form .group #rememberMe:checked+label .icon {
+    background: #1161ee;
+}
+
+.login-form .group #rememberMe:checked+label .icon:before {
+    transform: scale(1) rotate(45deg);
+}
+
+.login-form .group #rememberMe:checked+label .icon:after {
+    transform: scale(1) rotate(-45deg);
+}
+
+
+*/

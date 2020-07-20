@@ -1,0 +1,105 @@
+.content{
+    display: flex;
+}
+.sideMenu {
+    width: 250px;
+    
+    height: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.sideMenu>li{
+    height: 30px;
+    display: block;
+    line-height: 30px;
+}
+.sideMenu>li:hover{
+    cursor: pointer;
+    background-color: yellowgreen;
+}
+.sideMenu>li>a{
+    text-decoration: none;
+}
+.menuTitle{
+   background-color: black;
+   color: white;
+   
+}
+.productsList>li{
+    width: 300px;
+    margin-bottom: 20px;
+    border: 1px solid #d9d9d9;
+}
+.productsList>li:hover{
+
+    border: 1px solid black;
+  
+}
+.productsList{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+.productsList img{
+    height: 225px;
+
+}
+.card-body   {
+  padding: 10px;
+  /*
+  text-align: center;*/
+}
+.card-body>a{
+    text-decoration: none;
+    color: black;
+}
+.card-body>a:hover{
+    text-decoration: underline;
+}
+
+.card-title{
+    font-size: 25px;
+    text-align: center;
+    font-weight: bold;
+    
+    margin-bottom: 10px;
+}
+.card-content{
+    margin-bottom: 10px;
+}
+
+.card-body>ol{
+    list-style: decimal;
+    list-style-position: inside;
+}
+.card-body p{
+    margin-bottom: 5px;
+}
+.card-body>ol>li{
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+.card_btn{
+    padding: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.card_btn:hover{
+    background-color: black;
+    color: white;
+}
+.purchase{
+    display: flex;
+    justify-content: space-between;
+}
+.footer{
+    background-color: wheat;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+}
+.carousel-item img{
+    width: 80%!important;
+    margin: 0 auto;
+}
