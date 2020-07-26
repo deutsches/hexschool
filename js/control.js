@@ -78,10 +78,10 @@ Vue.component('productModal', {
                 console.log(error);
             });
             this.tempProduct = {
-                text:'',
+                text: '',
                 imageUrl: [],
                 tempdescription: [],
-                test:[],
+                test: [],
                 tempcontent: {
                     XL: 0,
                     L: 0,
@@ -113,9 +113,9 @@ Vue.component('productModal', {
 
         },
         addPlayer(text) {
-            
+
             this.tempProduct.tempdescription.push(text);
-            
+
         },
 
     }
@@ -242,7 +242,7 @@ new Vue({
                     break;
                 case 'new':
                     this.tempProduct = {
-                        text:'',
+                        text: '',
                         imageUrl: [],
                         tempdescription: [],
                         tempcontent: {
@@ -288,7 +288,9 @@ new Vue({
                 console.log(error);
             });
         },
+        filterProduct() {
 
+        },
     },
     /*
     //畫面一進來就執行
