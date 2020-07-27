@@ -6,12 +6,13 @@ new Vue({
         isLoading: false,
         status: {
             loadingItem: '',
-          },
+        },
         products: [],
         tempProduct: {
             quantity: 0,
         },
         cart: {},
+        text: '',
 
     },
     created() {
@@ -24,12 +25,15 @@ new Vue({
             axios.get(url).then((response) => {
                 console.log(response);
                 this.products = response.data.data;
+                this.products.forEach(element => {
+                    element.content = JSON.parse(element.content);
+                });
                 //this.isLoading = false;
             }).catch((error) => {
                 console.log(error);
             });
         },
-        
+
         //產品細節
         getProductDetail(id) {
             const url = `${this.APIPATH}/api/${this.UUID}/ec/product/${id}`;
@@ -44,51 +48,56 @@ new Vue({
             });
         },
         //加入購物車
-        addToCart(item,quantity=1) {
+        addToCart(item, quantity = 1) {
             const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
+            // let size = 
             const cart = {
                 product: item.id,
                 quantity,
-                content:item.content,
+
             };
+            const localstorageCart = {};
+            //localstorageCart = this.products;
+            //localStorage.setItem("cart", localstorageCart);
             axios.post(url, cart).then((response) => {
                 console.log(response);
             }).catch((error) => {
                 console.log(error);
             });
-        },/*
-        //移除全部購物車內容
-        removeAllCart() {
-            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/all/product`;
-            axios.delete(url)
-                .then(() => {
-                    this.isLoading = false;
-                    this.getCart();
-                }).catch((error) => {
-                    console.log(error);
-                });
         },
-        //移除單一購物車內容
-        removeSingleCart() {
-            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/${id}`;
-            axios.delete(url).then(() => {
-                this.isLoading = false;
-                this.getCart();
-            });
-        },
-        //顯示購物車內容
-        getCart() {
-            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
-            axios.get(url).then((response) => {
-                this.cart = response.data.data;
-                // 累加總金額
-                this.cart.forEach((item) => {
-                    this.cartTotal += item.product.price;
-                });
-                this.isLoading = false;
-            });
+        /*
+                //移除全部購物車內容
+                removeAllCart() {
+                    const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/all/product`;
+                    axios.delete(url)
+                        .then(() => {
+                            this.isLoading = false;
+                            this.getCart();
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                },
+                //移除單一購物車內容
+                removeSingleCart() {
+                    const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/${id}`;
+                    axios.delete(url).then(() => {
+                        this.isLoading = false;
+                        this.getCart();
+                    });
+                },
+                //顯示購物車內容
+                getCart() {
+                    const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
+                    axios.get(url).then((response) => {
+                        this.cart = response.data.data;
+                        // 累加總金額
+                        this.cart.forEach((item) => {
+                            this.cartTotal += item.product.price;
+                        });
+                        this.isLoading = false;
+                    });
 
-        },*/
+                },*/
         /*
         quantityUpdata(id, num) {
             // 避免商品數量低於 0 個

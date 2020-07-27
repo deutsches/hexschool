@@ -9,7 +9,7 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css' />
     <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
     <style>
-        .card{
+        .card {
             position: relative;
         }
     </style>
@@ -29,9 +29,19 @@
                         <h5 class="card-title">
                             <a href="#" class="text-dark">{{ product.title }}</a>
                         </h5>
-                        <p class="card-text" v-html="product.content">
-                            {{ product.content }}
-                        </p>
+                        <div>
+                            <div>
+                                <button class="btn btn-light" @click="text = product.content.XL" :key="product.id">XL</button>
+                                <button class="btn btn-light" @click="text = product.content.L" :key="product.id">L</button>
+                                <button class="btn btn-light" @click="text = product.content.M" :key="product.id">M</button>
+                                <button class="btn btn-light" @click="text = product.content.S" :key="product.id">S</button>
+                            </div>
+                            <div>
+                                <span>剩餘件數{{text}}</span>
+                            </div>
+
+                        </div>
+
                         <div class="d-flex justify-content-between align-items-baseline">
                             <!-- 售價(price)欄位是可選的，因此售價若為空，就顯示原價(origin_price)
                         售價若不為空，就顯示原價(origin_price)與售價(price) -->
@@ -111,7 +121,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
     <!-- 產品頁面 Modal end -->
     <!-- 購物車頁面 start -->
@@ -131,10 +141,10 @@
                     <th>數量</th>
                     <th>價格</th>
                 </thead>
-                <tbody >
-                <tr>
-                    
-                </tr>
+                <tbody>
+                    <tr>
+
+                    </tr>
                 </tbody>
             </table>
         </div>
