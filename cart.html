@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css' />
     <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
+    <style>
+        .card{
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,16 +45,16 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="card-footer d-flex">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" :disabled="status.loadingItem === item.id" @click="getDetailed(item.id)">
-                          <i v-if="status.loadingItem === item.id" class="spinner-grow spinner-grow-sm"></i>
+                        <div class="card-footer d-flex">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" :disabled="status.loadingItem === product.id" @click="getProductDetail(product.id)">
+                          <i v-if="status.loadingItem === product.id" class="spinner-grow spinner-grow-sm"></i>
                           查看更多
                         </button>
-                            <button type="button" class="btn btn-outline-danger btn-sm ml-auto" :disabled="status.loadingItem === item.id" @click="addToCart(item)">
-                          <i v-if="status.loadingItem === item.id" class="spinner-grow spinner-grow-sm"></i>
+                            <button type="button" class="btn btn-outline-danger btn-sm ml-auto" :disabled="status.loadingItem === product.id" @click="addToCart(product)">
+                          <i v-if="status.loadingItem === product.id" class="spinner-grow spinner-grow-sm"></i>
                           加到購物車
                         </button>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,19 +62,19 @@
 
         <!-- 產品列表 end -->
         <!-- 產品頁面 start -->
-        <!-- <div id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div id="productModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 id="exampleModalLabel" class="modal-title">
-                            {{ tempProduct.title }}
+                            {{ tempProduct.category }} {{ tempProduct.title }}
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                     </div>
                     <div class="modal-body">
-                        <img :src="tempProduct.image" class="img-fluid" alt>
+                        <img :src="tempProduct.imageUrl" class="img-fluid" alt>
                         <blockquote class="blockquote mt-3">
                             <p class="mb-0" v-html="tempProduct.content"></p>
                             <footer class="blockquote-footer text-right">
@@ -106,11 +111,34 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div> 
     </div>
     <!-- 產品頁面 Modal end -->
     <!-- 購物車頁面 start -->
-
+    <div>
+        <div>
+            <button>
+                <i class="far fa-trash-alt"> 刪除所有品項</i>
+            </button>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <th>刪除</th>
+                    <th>類別</th>
+                    <th>名稱</th>
+                    <th>Size</th>
+                    <th>數量</th>
+                    <th>價格</th>
+                </thead>
+                <tbody >
+                <tr>
+                    
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <!-- 購物車頁面 end -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">

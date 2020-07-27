@@ -4,10 +4,14 @@ new Vue({
         UUID: 'b0dfb920-fb7e-4d2d-a3d3-2fc915e7f293',
         APIPATH: 'https://course-ec-api.hexschool.io',
         isLoading: false,
+        status: {
+            loadingItem: '',
+          },
         products: [],
         tempProduct: {
             quantity: 0,
-        }
+        },
+        cart: {},
 
     },
     created() {
@@ -25,32 +29,34 @@ new Vue({
                 console.log(error);
             });
         },
-        /*
+        
         //產品細節
         getProductDetail(id) {
             const url = `${this.APIPATH}/api/${this.UUID}/ec/product/${id}`;
             axios.get(url).then((response) => {
-                this.products = response.data.data;
+                this.tempProduct = response.data.data;
                 this.$set(this.tempProduct, 'quantity', 1);
                 $('#productModal').modal('show');
+                console.log(this.tempProduct);
                 this.status.loadingItem = '';
-            }).ctach((error) => {
-                console.log(error);
-            });
-        },
-        //加入購物車
-        addToCart() {
-            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
-            const cart = {
-                product: item.id,
-                quantity,
-            };
-            axios.post(url, cart).then(() => {
-
             }).catch((error) => {
                 console.log(error);
             });
         },
+        //加入購物車
+        addToCart(item,quantity=1) {
+            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
+            const cart = {
+                product: item.id,
+                quantity,
+                content:item.content,
+            };
+            axios.post(url, cart).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            });
+        },/*
         //移除全部購物車內容
         removeAllCart() {
             const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/all/product`;
