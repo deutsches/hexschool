@@ -19,6 +19,9 @@ new Vue({
         this.getProducts();
     },
     methods: {
+        display(num){
+            this.text = num;
+        },
         getProducts(page = 1) {
             //this.isLoading = true;
             const url = `${this.APIPATH}/api/${this.UUID}/ec/products?page=${page}`;
