@@ -12,22 +12,32 @@ new Vue({
             quantity: 0,
         },
         cart: {},
-        text: '',
+
 
     },
     created() {
         this.getProducts();
     },
     methods: {
+        display(item) {
+            console.log(item);
+        },
         getProducts(page = 1) {
             //this.isLoading = true;
             const url = `${this.APIPATH}/api/${this.UUID}/ec/products?page=${page}`;
             axios.get(url).then((response) => {
-                console.log(response);
-                this.products = response.data.data;
-                this.products.forEach(element => {
+                //console.log(response);
+                response.data.data.text = '';
+
+                //console.log(response.data.data);
+                response.data.data.forEach((element, index) => {
                     element.content = JSON.parse(element.content);
+                    element.text = 0;
+                    // this.products[index].text = '';
+                    //console.log(element);
                 });
+                this.products = response.data.data;
+                console.log(this.products);
                 //this.isLoading = false;
             }).catch((error) => {
                 console.log(error);

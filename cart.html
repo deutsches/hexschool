@@ -30,14 +30,15 @@
                             <a href="#" class="text-dark">{{ product.title }}</a>
                         </h5>
                         <div>
+                            {{ product.content }}
                             <div>
-                                <button class="btn btn-light" @click="text = product.content.XL" :key="product.id">XL</button>
-                                <button class="btn btn-light" @click="text = product.content.L" :key="product.id">L</button>
-                                <button class="btn btn-light" @click="text = product.content.M" :key="product.id">M</button>
-                                <button class="btn btn-light" @click="text = product.content.S" :key="product.id">S</button>
+                                <button class="btn btn-light" @click="product.text = product.content.XL;display(product);">XL</button>
+                                <button class="btn btn-light" @click="product.text = product.content.L">L</button>
+                                <button class="btn btn-light" @click="product.text = product.content.M">M</button>
+                                <button class="btn btn-light" @click="product.text = product.content.S">S</button>
                             </div>
                             <div>
-                                <span>剩餘件數{{text}}</span>
+                                <span>剩餘件數{{product.text}}</span>
                             </div>
 
                         </div>
