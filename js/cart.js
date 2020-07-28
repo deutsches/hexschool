@@ -19,8 +19,13 @@ new Vue({
         this.getProducts();
     },
     methods: {
+<<<<<<< HEAD
         display(item) {
             console.log(item);
+=======
+        display(num){
+            this.text = num;
+>>>>>>> c16aecd1a11f18115fbbc6309189797d4c6aa645
         },
         getProducts(page = 1) {
             //this.isLoading = true;

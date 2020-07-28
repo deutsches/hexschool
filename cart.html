@@ -32,6 +32,7 @@
                         <div>
                             {{ product.content }}
                             <div>
+<<<<<<< HEAD
                                 <button class="btn btn-light" @click="product.text = product.content.XL;display(product);">XL</button>
                                 <button class="btn btn-light" @click="product.text = product.content.L">L</button>
                                 <button class="btn btn-light" @click="product.text = product.content.M">M</button>
@@ -39,6 +40,15 @@
                             </div>
                             <div>
                                 <span>剩餘件數{{product.text}}</span>
+=======
+                                <button class="btn btn-light" @click="text = product.content.XL" >XL</button>
+                                <button class="btn btn-light" @click="text = product.content.L" >L</button>
+                                <button class="btn btn-light" @click="text = product.content.M" >M</button>
+                                <button class="btn btn-light" @click="text = product.content.S" >S</button>
+                            </div>
+                            <div>
+                                <span >剩餘件數{{text}}</span>
+>>>>>>> c16aecd1a11f18115fbbc6309189797d4c6aa645
                             </div>
 
                         </div>
