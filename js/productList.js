@@ -1,25 +1,127 @@
 new Vue({
     el: ".wrap",
     data: {
-        uuid: 'b0dfb920-fb7e-4d2d-a3d3-2fc915e7f293',
-        uuids:'',
-        productLists: []
+        UUID: 'b0dfb920-fb7e-4d2d-a3d3-2fc915e7f293',
+        APIPATH: 'https://course-ec-api.hexschool.io',
+        isLoading: false,
+        status: {
+            loadingItem: '',
+        },
+        products: [],
+        tempProduct: {
+            quantity: 1,
+            content: {
+                XL: 0,
+                L: 0,
+                M: 0,
+                S: 0,
+            },
+            tempQuantity: 1,
+            tempSize:'',
+        },
+        cart: {},
+
+
     },
-   
+    created() {
+        this.getProducts();
+    },
+    methods: {
+        getProducts(page = 1) {
+            //this.isLoading = true;
+            const url = `${this.APIPATH}/api/${this.UUID}/ec/products?page=${page}`;
+            axios.get(url).then((response) => {
+                //console.log(response);
+                response.data.data.text = '';
+
+                //console.log(response.data.data);
+                response.data.data.forEach((element, index) => {
+                    element.content = JSON.parse(element.content);
+                    element.text = 0;
+                    // this.products[index].text = '';
+                    //console.log(element);
+                });
+                this.products = response.data.data;
+
+                //this.isLoading = false;
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+
+        //產品細節
+        getProductDetail(id) {
+            const url = `${this.APIPATH}/api/${this.UUID}/ec/product/${id}`;
+            axios.get(url).then((response) => {
+                this.tempProduct = response.data.data;
+                this.tempProduct.content = JSON.parse(this.tempProduct.content);
+                //???
+                this.$set(this.tempProduct, 'quantity', 1);
+                this.$set(this.tempProduct, 'tempQuantity', 1);
+
+                $('#productModal').modal('show');
+                this.status.loadingItem = '';
+            }).catch((error) => {
+                console.log(error);
+            });
+        },
+        //加入購物車
+        addToCart(item) {
+           // const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
+            // let size = 
+            /*
+            const cart = {
+                product: item.id,
+                quantity,
+
+            };*/
+            const localstorageCart = {
+                //product: item.id,
+                size :item,
+                time:Math.random(),
+            };
+            //localstorageCart = this.products;
+            localStorage.setItem("cart", JSON.stringify(localstorageCart));
+/*
+            axios.post(url, cart).then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            });*/
+        },
+        /*quantityUpdata(id, num) {
+            // 避免商品數量低於 0 個
+            if (num <= 0) return;
+
+            this.isLoading = true;
+            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
+
+            const data = {
+                product: id,
+                quantity: num,
+            };
+
+            axios.patch(url, data).then(() => {
+                this.isLoading = false;
+                this.getCart();
+            });
+        },*/
+    },
+    /*
     mounted() {
-        var vm = this;      
+        var vm = this;
         var url = `https://course-ec-api.hexschool.io/api/${vm.uuid}/ec/products`;
-    
+
         axios.get(url)
-        .then(function (response) {
-           
-            vm.productLists = response.data.data;
-            console.log(vm.productLists);
-        })
-        .catch(function (response) {
-            console.log(response);
-        })
-    }
+            .then(function (response) {
+
+                vm.productLists = response.data.data;
+                console.log(vm.productLists);
+            })
+            .catch(function (response) {
+                console.log(response);
+            })
+    }*/
 
 });
 /*
@@ -30,14 +132,14 @@ new Vue({
         uuids:'',
         productLists: []
     },
-   
+
     mounted() {
-        var vm = this;      
+        var vm = this;
         var url = `https://course-ec-api.hexschool.io/api/${vm.uuid}/ec/products`;
-    
+
         axios.get(url)
         .then(function (response) {
-           
+
             vm.productLists = response.data.data;
             //console.log(vm.productLists);
         })
@@ -82,7 +184,7 @@ var obj = {
         var str = '';
         var sideMenustr = `<li class='menuTitle'>球隊分類</li>`;
         products.forEach(function (item, i) {
-            
+
         str += `<div class="card">
             <img src="${ item.imageUrl[0]}" class="card-img-top">
             <div class="card-body">

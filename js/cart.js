@@ -16,103 +16,49 @@ new Vue({
 
     },
     created() {
-        this.getProducts();
+        this.getCart();
     },
     methods: {
-<<<<<<< HEAD
-        display(item) {
-            console.log(item);
-=======
-        display(num){
-            this.text = num;
->>>>>>> c16aecd1a11f18115fbbc6309189797d4c6aa645
-        },
-        getProducts(page = 1) {
-            //this.isLoading = true;
-            const url = `${this.APIPATH}/api/${this.UUID}/ec/products?page=${page}`;
-            axios.get(url).then((response) => {
-                //console.log(response);
-                response.data.data.text = '';
 
-                //console.log(response.data.data);
-                response.data.data.forEach((element, index) => {
-                    element.content = JSON.parse(element.content);
-                    element.text = 0;
-                    // this.products[index].text = '';
-                    //console.log(element);
+        //移除全部購物車內容
+        removeAllCart() {
+            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/all/product`;
+            axios.delete(url)
+                .then(() => {
+                    this.isLoading = false;
+                    localStorage.removeItem("cart");
+                    this.getCart();
+                }).catch((error) => {
+                    console.log(error);
                 });
-                this.products = response.data.data;
-                console.log(this.products);
-                //this.isLoading = false;
-            }).catch((error) => {
-                console.log(error);
-            });
         },
+        //移除單一購物車內容
+        removeSingleCart() {
+            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/${id}`;
+            axios.delete(url).then(() => {
+                this.isLoading = false;
+                this.getCart();
+                const tmepCart =[];
+                tmepCart = localStorage.getItem("cart");
 
-        //產品細節
-        getProductDetail(id) {
-            const url = `${this.APIPATH}/api/${this.UUID}/ec/product/${id}`;
-            axios.get(url).then((response) => {
-                this.tempProduct = response.data.data;
-                this.$set(this.tempProduct, 'quantity', 1);
-                $('#productModal').modal('show');
-                console.log(this.tempProduct);
-                this.status.loadingItem = '';
-            }).catch((error) => {
+            }).then((error)=>{
                 console.log(error);
             });
         },
-        //加入購物車
-        addToCart(item, quantity = 1) {
+        //顯示購物車內容
+        getCart() {
+            /*
             const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
-            // let size = 
-            const cart = {
-                product: item.id,
-                quantity,
-
-            };
-            const localstorageCart = {};
-            //localstorageCart = this.products;
-            //localStorage.setItem("cart", localstorageCart);
-            axios.post(url, cart).then((response) => {
-                console.log(response);
-            }).catch((error) => {
-                console.log(error);
-            });
+            axios.get(url).then((response) => {
+                this.cart = response.data.data;
+                // 累加總金額
+                this.cart.forEach((item) => {
+                    this.cartTotal += item.product.price;
+                });
+                this.isLoading = false;
+            });*/
+            this.products = JSON.parse(localStorage.getItem("cart"));
         },
-        /*
-                //移除全部購物車內容
-                removeAllCart() {
-                    const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/all/product`;
-                    axios.delete(url)
-                        .then(() => {
-                            this.isLoading = false;
-                            this.getCart();
-                        }).catch((error) => {
-                            console.log(error);
-                        });
-                },
-                //移除單一購物車內容
-                removeSingleCart() {
-                    const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/${id}`;
-                    axios.delete(url).then(() => {
-                        this.isLoading = false;
-                        this.getCart();
-                    });
-                },
-                //顯示購物車內容
-                getCart() {
-                    const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
-                    axios.get(url).then((response) => {
-                        this.cart = response.data.data;
-                        // 累加總金額
-                        this.cart.forEach((item) => {
-                            this.cartTotal += item.product.price;
-                        });
-                        this.isLoading = false;
-                    });
-
-                },*/
         /*
         quantityUpdata(id, num) {
             // 避免商品數量低於 0 個

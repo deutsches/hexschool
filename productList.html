@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <!--手機網頁一定要加下面這段 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <!--css reset -->
     <link rel="stylesheet" href="css/style.css">
@@ -16,6 +17,27 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
     <title>足球世界</title>
+    <style>
+        .cart {
+            background-color: black;
+            opacity: 0.5;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* display: flex; */
+            width: 286px;
+            height: 300px;
+        }
+        .card:hover>.cart {
+            text-align: center;
+            color: white;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            z-index: 999;
+        }
+    </style>
 </head>
 
 <body>
@@ -47,30 +69,151 @@
 
 
     <div class="wrap">
-
-
         <div class="content">
 
             <ul class="sideMenu">
 
             </ul>
-            <ul class="productsList">
-                <li v-for="(product,index) in productLists" :key="index">
-                    <a href='#'><img :src="product.imageUrl" class="card-img-top"></a>
-                    <div class='card-body'>
-                        <a href='#'>
-                            <h3 class='card-title'>{{ product.title}}</h3>
-                        </a>
+            <div class="row ">
+                <div class="col-md-4 mb-4" v-for="(product ,key) in products" :key="key">
+                    <div class="card border-0 shadow-sm" style="width: 300px;">
+                        <div  style="height: 350px; background-size: cover; background-position: center"
+                            :style="{backgroundImage: `url(${product.imageUrl})`}"></div>
+                        <div class="cart">
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        :disabled="status.loadingItem === product.id"
+                                        @click="getProductDetail(product.id)">
+                                        <i v-if="status.loadingItem === product.id"
+                                            class="spinner-grow spinner-grow-sm"></i>
+                                        查看更多
+                                    </button>
+                        </div>
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                <a href="#" class="text-dark">{{ product.category }}</a>
+                            </h5>
+                            <h5 class="card-title">
+                                <a href="#" class="text-dark">{{ product.title }}</a>
+                            </h5>
+
+                            <div class="d-flex justify-content-between align-items-baseline ">
+                                <!-- 售價(price)欄位是可選的，因此售價若為空，就顯示原價(origin_price)
+                            售價若不為空，就顯示原價(origin_price)與售價(price) -->
+                                <div v-if="!product.price" class="h5"  style="text-align: center;width: 100%;">
+                                    {{ product.origin_price }} 元
+                                </div>
+                                <div v-else style="text-align: center;width: 100%;">
+                                    <del class="h6"> {{ product.origin_price }} 元</del>
+                                    <div class="h5 text-danger">
+                                        {{ product.price }} 元
+                                    </div>
+                                </div>
+
+                                <!-- <div class="card-footer d-flex">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        :disabled="status.loadingItem === product.id"
+                                        @click="getProductDetail(product.id)">
+                                        <i v-if="status.loadingItem === product.id"
+                                            class="spinner-grow spinner-grow-sm"></i>
+                                        查看更多
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm ml-auto"
+                                        :disabled="status.loadingItem === product.id" @click="addToCart(product)">
+                                        <i v-if="status.loadingItem === product.id"
+                                            class="spinner-grow spinner-grow-sm"></i>
+                                        加到購物車
+                                    </button>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 產品列表 end -->
+                <!-- 產品頁面 start -->
+                <div id="productModal" class="modal fade" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 id="exampleModalLabel" class="modal-title">
+                                    {{ tempProduct.category }} {{ tempProduct.title }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <img :src="tempProduct.imageUrl" class="img-fluid" alt>
+                                <!-- <blockquote class="blockquote mt-3">
+                                    <p class="mb-0" v-html="tempProduct.content"></p>
+                                    <footer class="blockquote-footer text-right">
+                                        {{ tempProduct.origin_price }}
+                                    </footer>
+                                </blockquote> -->
+                                <div>
+                                    <button class="btn btn-light"
+                                        @click="tempProduct.tempQuantity = tempProduct.content.XL;tempProduct.tempSize = 'XL'">XL</button>
+                                    <button class="btn btn-light"
+                                        @click="tempProduct.tempQuantity = tempProduct.content.L;tempProduct.tempSize = 'L'">L</button>
+                                    <button class="btn btn-light"
+                                        @click="tempProduct.tempQuantity = tempProduct.content.M;tempProduct.tempSize = 'M'">M</button>
+                                    <button class="btn btn-light"
+                                        @click="tempProduct.tempQuantity = tempProduct.content.S;tempProduct.tempSize = 'S'">S</button>
+                                </div>
+                                <div>
+                                    <span>剩餘件數{{tempProduct.tempQuantity}}</span>
+
+                                </div>
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <div v-if="!tempProduct.price" class="h4">
+                                        {{ tempProduct.origin_price }} 元
+                                    </div>
+                                    <del v-if="tempProduct.price" class="h6">原價 {{ tempProduct.origin_price }} 元</del>
+                                    <div v-if="tempProduct.price" class="h4">
+                                        現在只要 {{ tempProduct.price }} 元
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button"
+                                            @click="tempProduct.quantity -= 1" :disabled="tempProduct.quantity === 1">
+                                            -
+                                        </button>
+                                    </div>
+                                    <input id="inlineFormInputGroupUsername" type="number"
+                                        class="form-control text-center" :value="tempProduct.quantity"
+                                        @keyup.enter="quantityUpdata(tempProduct.product.id, $event.target.value)">
+
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-outline-primary" type="button"
+                                            @click="tempProduct.quantity += 1"
+                                            :disabled="tempProduct.quantity === tempProduct.tempQuantity">
+                                            +
+                                        </button>
+                                    </div>
+                                </div>
 
 
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <div v-if="tempProduct.quantity" class="text-muted text-nowrap mr-3">
+                                    小計
+                                    <strong>{{ tempProduct.quantity * tempProduct.price }}</strong> 元
+                                </div>
+                                <button type="button" class="btn btn-primary"
+                                    @click="addToCart(tempProduct.tempSize)">
+                                    <i v-if="tempProduct.id === status.loadingItem" class="fas fa-spinner fa-spin"></i>
+                                    加到購物車
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class='purchase'>
-                        <span>現在只要<del>${{product.origin_price}}</del><span
-                                class='space discount'>${{product.price}}</span></span>
-                        <div class="card_btn" :data-item="product.id"><i class="fas fa-shopping-cart"></i>加入購物車</div>
-                    </div>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
         <footer class="footer">
             圖片為練習使用，無商業用途。
@@ -80,9 +223,15 @@
 
 
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
     <script src="js/common.js"></script>
     <script src="js/productList.js"></script>
 </body>
