@@ -9,15 +9,16 @@ new Vue({
         },
         products: [],
         tempProduct: {
-            quantity: 1,
+            tempQuantity: 0,
+            quantity: 0,
             content: {
                 XL: 0,
                 L: 0,
                 M: 0,
                 S: 0,
             },
-            tempQuantity: 1,
-            tempSize:'',
+
+            tempSize: '',
         },
         cart: {},
 
@@ -32,12 +33,12 @@ new Vue({
             const url = `${this.APIPATH}/api/${this.UUID}/ec/products?page=${page}`;
             axios.get(url).then((response) => {
                 //console.log(response);
-                response.data.data.text = '';
+                //response.data.data.text = '';
 
                 //console.log(response.data.data);
                 response.data.data.forEach((element, index) => {
                     element.content = JSON.parse(element.content);
-                    element.text = 0;
+                    //element.text = 0;
                     // this.products[index].text = '';
                     //console.log(element);
                 });
@@ -48,26 +49,31 @@ new Vue({
                 console.log(error);
             });
         },
-
+        display(a, b, c) {
+            console.log(a, b, typeof(b), typeof(this.tempProduct.tempQuantity));
+        },
         //產品細節
         getProductDetail(id) {
             const url = `${this.APIPATH}/api/${this.UUID}/ec/product/${id}`;
             axios.get(url).then((response) => {
+                console.log(response.data.data);
                 this.tempProduct = response.data.data;
                 this.tempProduct.content = JSON.parse(this.tempProduct.content);
+                console.log(this.tempProduct.content);
                 //???
-                this.$set(this.tempProduct, 'quantity', 1);
-                this.$set(this.tempProduct, 'tempQuantity', 1);
-
+                this.$set(this.tempProduct, 'quantity', 0);
+                this.$set(this.tempProduct, 'tempQuantity', -1);
+                console.log(typeof(this.tempProduct.quantity), typeof(this.tempProduct.tempQuantity), typeof(this.tempProduct.content.M));
                 $('#productModal').modal('show');
                 this.status.loadingItem = '';
             }).catch((error) => {
                 console.log(error);
             });
         },
+
         //加入購物車
         addToCart(item) {
-           // const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
+            // const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
             // let size = 
             /*
             const cart = {
@@ -77,17 +83,17 @@ new Vue({
             };*/
             const localstorageCart = {
                 //product: item.id,
-                size :item,
-                time:Math.random(),
+                size: item,
+                time: Math.random(),
             };
             //localstorageCart = this.products;
             localStorage.setItem("cart", JSON.stringify(localstorageCart));
-/*
-            axios.post(url, cart).then((response) => {
-                console.log(response);
-            }).catch((error) => {
-                console.log(error);
-            });*/
+            /*
+                        axios.post(url, cart).then((response) => {
+                            console.log(response);
+                        }).catch((error) => {
+                            console.log(error);
+                        });*/
         },
         /*quantityUpdata(id, num) {
             // 避免商品數量低於 0 個
