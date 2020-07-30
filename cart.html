@@ -3,12 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css' />
-    <link href="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3/dist/vue-loading.css" rel="stylesheet">
+    <!--手機網頁一定要加下面這段 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!--css reset -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <title>購物車</title>
     <style>
         .card {
             position: relative;
@@ -17,6 +24,31 @@
 </head>
 
 <body>
+    <!--nav-->
+    <div class="nav">
+        <nav>
+            <div class="header">
+                <div class="logo">
+                    <a href="index.html">
+                        <img alt="" width="184" height="80" src="img/pic6.png">
+                    </a>
+                </div>
+                <div class="menuList">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="productList.html">Product</a></li>
+                        <li><a href="cart.html">購物車</a></li>
+                        <li><a href="control.html">控制台</a></li>
+                        <li><a href="login.html">登入</a></li>
+                    </ul>
+                </div>
+                <div class="mobileMenu">
+                    <i class="fas fa-bars fa-2x"></i>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </nav>
+    </div>
     <div id="app">
 
         <!-- https://colorlib.com/preview/#liquorstore -->
@@ -30,7 +62,7 @@
             <div>
                 <table class="table">
                     <thead>
-                        <th>刪除</th>
+                        <th></th>
                         <th>名稱</th>
                         <th>Size</th>
                         <th>數量</th>
@@ -40,44 +72,99 @@
                         <tr v-for="item in cart" :key="item.id">
                             <td class="align-middle">
                                 <button type="button" class="btn btn-outline-danger btn-sm"
-                                    @click="removeCartItem(item.product.id)">
+                                    @click="removeSingleCart(item.product.id,item.timeStamp)">
                                     <i class="far fa-trash-alt"></i>
                                 </button>
                             </td>
                             <td>
-                                測試
+                                {{item.category}}<br>{{item.title}}
                             </td>
                             <td>
-                                XL
+                                {{item.size}}
                             </td>
                             <td>
-                                5
+                                {{item.quantity}}
                             </td>
                             <td>
-                                1000    
+                                {{item.totalAmount}}
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
         <!-- 購物車頁面 end -->
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-            </script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-            </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-            </script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
-        <!-- https://cdnjs.com/libraries/vee-validate 注意版本，full 則包含 rules -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.3.0/vee-validate.full.min.js"></script>
-        <script src="./js/cart.js"></script>
+        <!-- 資訊驗證 start -->
+
+        <div>
+            <form>
+                <div class="form-group">
+                    <label for="orderName">訂購人姓名</label>
+                    <input type="text" class="form-control" id="orderName" placeholder="王小名">
+                </div>
+                <div class="form-group">
+                    <label for="orderTel">訂購人電話</label>
+                    <input type="tel" class="form-control" id="orderTel" placeholder="09XX-XXX-XXX">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Email address</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1"
+                        placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="address">收貨地址</label>
+                    <input type="text" class="form-control" id="address" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">付款方式</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">同訂購人</label>
+                </div>
+                <div class="form-group">
+                    <label for="receiverName">收貨人姓名</label>
+                    <input type="text" class="form-control" id="receiverName" placeholder="王小名">
+                </div>
+                <div class="form-group">
+                    <label for="receiverTel">收貨人電話</label>
+                    <input type="tel" class="form-control" id="receiverTel" placeholder="09XX-XXX-XXX">
+                </div>
+                <div class="form-group">
+                    <label for="remark">備註</label>
+                    <textarea class="form-control" id="remark" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <!-- 資訊驗證 end -->
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+        </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
+    <!-- https://cdnjs.com/libraries/vee-validate 注意版本，full 則包含 rules -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.3.0/vee-validate.full.min.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/common.js "></script>
 </body>
 
 </html>
