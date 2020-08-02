@@ -1,8 +1,8 @@
-$(document).ready(function () {
+$(document).ready(function() {
     // $('#myModal').modal();
 
-    $('#carouselExampleCaptions').carousel();
-    $(window).scroll(function () {
+    //$('#carouselExampleCaptions').carousel();
+    $(window).scroll(function() {
 
         if ($(document).scrollTop() > 50) {
 
@@ -10,8 +10,7 @@ $(document).ready(function () {
 
             //console.log("OK");
 
-        } 
-        else {
+        } else {
 
             $('body nav:nth-child(1)').removeClass('affix');
 
@@ -19,11 +18,11 @@ $(document).ready(function () {
 
     });
     var test = document.querySelector('.mobileMenu');
-    test.addEventListener('click',displayMobileMenu);
+    test.addEventListener('click', displayMobileMenu);
 
-    function displayMobileMenu(){
+    function displayMobileMenu() {
         document.querySelector('.menuList').classList.toggle("menuListshow");
-        
+
     }
 
 });

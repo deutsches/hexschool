@@ -66,32 +66,34 @@ new Vue({
         },
 
         //加入購物車
-        addToCart(item, quantity, size,totalAmount,category,title) {/*
-            const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
-            const cart = {
-                product: item.id,
-                quantity,
-            };
-            axios.post(url, cart).then((response) => {
-                console.log(response);
-            }).catch((error) => {
-                console.log(error);
-            });
-*/
+        addToCart(item, quantity, price, size, totalAmount, category, title, imageUrl) {
+            /*
+                        const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping`;
+                        const cart = {
+                            product: item.id,
+                            quantity,
+                        };
+                        axios.post(url, cart).then((response) => {
+                            console.log(response);
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+            */
             const localstorageCart = {
                 product: item.id,
                 quantity,
+                price,
                 size,
                 totalAmount,
                 category,
                 title,
+                imageUrl,
                 timeStamp: Math.random(),
-                
+
             };
 
             let tempCart = [];
-            if(JSON.parse(localStorage.getItem("cart"))!=null)
-            {
+            if (JSON.parse(localStorage.getItem("cart")) != null) {
                 tempCart.push(JSON.parse(localStorage.getItem("cart")));
             }
             tempCart.push(localstorageCart);
@@ -102,6 +104,6 @@ new Vue({
             $('#productModal').modal('hide');
         },
     },
- 
+
 
 });

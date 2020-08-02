@@ -1,26 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant-TW">
 
 <head>
     <meta charset="UTF-8">
     <!--手機網頁一定要加下面這段 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!--css reset -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
     <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
     <title>購物車</title>
-    <style>
-        .card {
-            position: relative;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -50,120 +45,237 @@
         </nav>
     </div>
     <div id="app">
+        <div class="col-md-6 col-md-offset-3">
+            <div id="msform">
+                <!-- progressbar -->
+                <ul id="progressbar">
+                    <li class="active">產品確認</li>
+                    <li>填寫資料</li>
+                    <li>訂單完成</li>
+                </ul>
+                <!-- fieldsets -->
+                <fieldset>
+                    <table class="table">
+                        <thead>
+                            <th></th>
+                            <th></th>
+                            <th class="text-center">數量</th>
+                            <th class="text-right">價格</th>
+                            <th width="50"></th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(product ,index) in cart" :key="index">
+                                <td class="pos">
+                                    <img :src="product.imageUrl" width="100" height="100" alt="">
+                                    <!-- {{item.category}}<br>{{item.title}} -->
+                                </td>
+                                <td class="align-middle">
+                                    <p>{{product.category}}</p>
+                                    <p>{{product.title}}</p>
+                                    <p>size: {{product.size}}</p>
+                                </td>
+                                <td class="align-middle ">
+                                    {{product.quantity}}
+                                    <!-- {{item.quantity}} -->
+                                </td>
+                                <td class="align-middle text-right">
+                                    {{product.price}}
+                                    <!-- {{item.totalAmount}} -->
+                                </td>
+                                <td class="align-middle">
+                                    <div class="">
+                                        <button type="button" class="btn btn-outline-danger btn-sm   " @click="removeSingleCart(item.product.id,item.timeStamp)">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </div>
 
-        <!-- https://colorlib.com/preview/#liquorstore -->
-        <!-- 購物車頁面 start -->
-        <div>
-            <div>
-                <button>
-                    <i class="far fa-trash-alt"> 刪除所有品項</i>
-                </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-right">總價：{{cartTotal}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <div>
+                            <input type="button" name="next" class="next action-button" value="下一步" />
+                        </div>
+                    </div>
+
+                </fieldset>
+                <fieldset>
+                    <h2 class="fs-title">訂購資訊</h2>
+                    <validation-observer v-slot="{ invalid }">
+                        <form class="" @submit.prevent='sendOrder'>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="orderName">訂購人姓名</label>
+                                        <validation-provider rules="required" v-slot="{errors,classes}">
+                                            <input id="orderName" name="訂購人姓名" v-model="data.orderName" type="text" class="form-control" :class="classes">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+                                        </validation-provider>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Tel">訂購人電話</label>
+                                        <validation-provider rules="min:8|required|numeric" v-slot="{errors,classes}">
+                                            <input type="tel" name="訂購人電話" class="form-control" :class="classes" id="Tel" placeholder="09XXXXXXXX" v-model="data.tel">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+
+                                        </validation-provider>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">Email </label>
+                                        <validation-provider rules="required|email" v-slot="{errors,classes,passed}">
+                                            <input type="email" name="Email" class="form-control" :class="classes" id="email" placeholder="name@example.com" v-model="data.email">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+                                            <span v-if="passed">OK!</span>
+                                        </validation-provider>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="address">地址</label>
+                                        <validation-provider rules="required" v-slot="{errors,classes,passed}">
+                                            <input type="text" class="form-control" :class="classes" id="address" name="地址" placeholder="" v-model="data.orderAddress">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+                                            <span v-if="passed">OK!!!</span>
+                                        </validation-provider>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">付款方式</label>
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                    <option value="disabled">請選擇付款方式</option>
+                                    <option value="WebATM">WebATM</option>
+                                    <option value="ATM">ATM</option>
+                                    <option value="CVS">CVS</option>
+                                    <option value="Barcode">Barcode</option>
+                                    <option value="Credit">Credit</option>
+                                    <option value="ApplePay">Apple Pay</option>
+                                    <option value="GooglePay">Google Pay</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-check d-flex justify-content-start">
+                                <input type="checkbox" class="form-check-input" id="sameOrder" @click='refillForm' v-model='orderStatus'>
+                                <label class="form-check-label" for="sameOrder">同訂購人</label>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="receiverName">收貨人姓名</label>
+                                        <validation-provider rules="required" v-slot="{errors,classes,passed}">
+                                            <input type="text" class="form-control" :class="classes" name="收貨人姓名" id="receiverName" placeholder="王小名" v-model="data.receiver">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+                                            <span v-if="passed">OK!</span>
+                                        </validation-provider>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="receiverTel">收貨人電話</label>
+                                        <validation-provider rules="min:8|required|numeric" v-slot="{errors,classes,passed}">
+                                            <input type="tel" class="form-control" :class="classes" name="收貨人電話" id="receiverTel" placeholder="09XXXXXXXX" v-model="data.receiverTel">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+                                            <span v-if="passed">OK!</span>
+                                        </validation-provider>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">收貨人 Email</label>
+                                        <validation-provider rules="required|email" v-slot="{errors,classes,passed}">
+                                            <input type="email" class="form-control" :class="classes" name="收貨人Email" id="receiverEmail" placeholder="name@example.com" v-model="data.receiverEmail">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+                                            <span v-if="passed">OK!</span>
+                                        </validation-provider>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="address">收貨人地址</label>
+                                        <validation-provider rules="required" v-slot="{errors,classes,passed}">
+                                            <input type="text" class="form-control" :class="classes" name="收貨人地址" id="receiverAddress" placeholder="" v-model="data.receiverAddress">
+                                            <span v-if="errors[0]" class="text-danger">{{ errors[0] }}</span>
+                                            <span v-if="passed">OK!</span>
+                                        </validation-provider>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label for="remark">備註</label>
+                                <textarea class="form-control" id="remark" rows="3"></textarea>
+                            </div>
+
+
+                            <input type="button" name="previous" class="previous action-button-previous" value="上一步" />
+                            <input type="button" name="next" class=" next action-button" value="送出訂單" :disabled="invalid" />
+
+                        </form>
+                    </validation-observer>
+
+                    <!-- <input type="submit" name="submit" class="submit action-button" value="Submit" /> -->
+                </fieldset>
+                <fieldset>
+                    <h2 class="fs-title">感謝您的訂購!</h2>
+                    <div>
+                        <div>
+                            <input type="button" name="previous" class="previous action-button-previous" value="繼續購物" />
+                            <a class="previous action-button-previous" href="./productList.html">繼續購物</a>
+                        </div>
+                    </div>
+
+                </fieldset>
             </div>
-            <div>
-                <table class="table">
-                    <thead>
-                        <th></th>
-                        <th>名稱</th>
-                        <th>Size</th>
-                        <th>數量</th>
-                        <th>價格</th>
-                    </thead>
-                    <tbody v-if="cart.length">
-                        <tr v-for="item in cart" :key="item.id">
-                            <td class="align-middle">
-                                <button type="button" class="btn btn-outline-danger btn-sm"
-                                    @click="removeSingleCart(item.product.id,item.timeStamp)">
-                                    <i class="far fa-trash-alt"></i>
-                                </button>
-                            </td>
-                            <td>
-                                {{item.category}}<br>{{item.title}}
-                            </td>
-                            <td>
-                                {{item.size}}
-                            </td>
-                            <td>
-                                {{item.quantity}}
-                            </td>
-                            <td>
-                                {{item.totalAmount}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- 購物車頁面 end -->
-        <!-- 資訊驗證 start -->
 
-        <div>
-            <form>
-                <div class="form-group">
-                    <label for="orderName">訂購人姓名</label>
-                    <input type="text" class="form-control" id="orderName" placeholder="王小名">
-                </div>
-                <div class="form-group">
-                    <label for="orderTel">訂購人電話</label>
-                    <input type="tel" class="form-control" id="orderTel" placeholder="09XX-XXX-XXX">
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlInput1">Email address</label>
-                    <input type="email" class="form-control" id="exampleFormControlInput1"
-                        placeholder="name@example.com">
-                </div>
-                <div class="form-group">
-                    <label for="address">收貨地址</label>
-                    <input type="text" class="form-control" id="address" placeholder="">
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">付款方式</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">同訂購人</label>
-                </div>
-                <div class="form-group">
-                    <label for="receiverName">收貨人姓名</label>
-                    <input type="text" class="form-control" id="receiverName" placeholder="王小名">
-                </div>
-                <div class="form-group">
-                    <label for="receiverTel">收貨人電話</label>
-                    <input type="tel" class="form-control" id="receiverTel" placeholder="09XX-XXX-XXX">
-                </div>
-                <div class="form-group">
-                    <label for="remark">備註</label>
-                    <textarea class="form-control" id="remark" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
 
-        <!-- 資訊驗證 end -->
+        </div>
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-        </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-        </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-        </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
     <!-- https://cdnjs.com/libraries/vee-validate 注意版本，full 則包含 rules -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/3.3.0/vee-validate.full.min.js"></script>
-    <script src="js/cart.js"></script>
+
+    <script type="module" src="js/cart.js"></script>
+
     <script src="js/common.js "></script>
 </body>
 
