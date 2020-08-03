@@ -82,6 +82,7 @@ new Vue({
         },
         //移除單一購物車內容
         removeSingleCart(id, timeStamp) {
+            /*
             const url = `${this.APIPATH}/api/${this.UUID}/ec/shopping/${id}`;
             axios.delete(url).then(() => {
                 this.isLoading = false;
@@ -89,11 +90,13 @@ new Vue({
 
             }).then((error) => {
                 console.log(error);
-            });
+            });*/
+            console.log(timeStamp);
             //localStorage部分
             this.cart.forEach((item, index) => {
-                if (timeStamp == item.timeStamp) {
-                    item.splice(index, 1);
+                console.log(item);
+                if (timeStamp === item.timeStamp) {
+                    this.cart.splice(index, 1);
                 }
             });
             localStorage.setItem('cart', JSON.stringify(this.cart));
