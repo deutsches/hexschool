@@ -95,9 +95,14 @@ new Vue({
             let tempCart = [];
             if (JSON.parse(localStorage.getItem("cart")) != null) {
                 tempCart.push(JSON.parse(localStorage.getItem("cart")));
+                tempCart.push(localstorageCart);
+                localStorage.setItem("cart", JSON.stringify(tempCart));
+            } else {
+                localStorage.setItem("cart", JSON.stringify(localstorageCart));
             }
-            tempCart.push(localstorageCart);
-            localStorage.setItem("cart", JSON.stringify(tempCart));
+
+
+
 
 
             this.status.loadingItem = '';
