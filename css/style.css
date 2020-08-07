@@ -174,3 +174,37 @@ width: 90%;
     left: 0px;
   }
 }
+
+/* Subscribe */
+.subscribe{
+  text-align: center;
+  margin-bottom: 150px;
+}
+.subscribe h3{
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.subscribe p{
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+.subscribe input{
+  padding: 16px 15px 15px;
+}
+/*footer css*/
+footer{
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding: 15px 0 10px 0;
+}
+footer a{
+  color: white;
+}
+footer p{
+  margin-top: 5px;
+}
+footer>p>a>svg{
+  margin-left: 20px;
+}
