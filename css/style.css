@@ -73,28 +73,28 @@ body nav:nth-child(1) {
   z-index: 999;
 }
 .logo {
-  float: left;
-  padding: 1rem 0 0 3rem;
-  margin-left: 3rem;
+  /* float: left; */
+  text-align: center;
+  padding: 1rem 0 0 0;
+  /* margin-left: 3rem; */
 }
 .menuList {
-  float: right;
+  /* float: right; */
 }
 .menuList ul {
   display: flex;
 }
 .menuList li {
   text-decoration: none;
-  
-  padding-right: 2.5rem;
-  margin-right: 2.5rem;
+  padding-right: 2rem;
+  margin-right: 2rem;
 }
 .menuList li a {
   text-decoration: none;
   font-family: 'Noto Sans TC', sans-serif;
   font-size: 62.5%;
   font-size: 20px;
-  color:  #99b3ff;
+  color:    #80bfff;
 }
 .menuList li a:hover {
   color: #0066ff;
